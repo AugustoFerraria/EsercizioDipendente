@@ -6,8 +6,6 @@ import java.util.Map;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,8 +18,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Dipendente {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
     private int id;
     private String nome;
     private String cognome;

@@ -1,6 +1,7 @@
 package com.example.EsercizioDipendente.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.EsercizioDipendente.entity.Dipendente;
@@ -44,11 +44,10 @@ public class DipendenteController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@PostMapping("/{id}/bonus-malus")
-	public ResponseEntity<Dipendente> addBonusMalus(@PathVariable int id, @RequestParam EMese month,
-			@RequestParam Double bonusMalus) {
-		Dipendente updated = dipendenteService.addBonusMalus(id, month, bonusMalus);
-		return new ResponseEntity<>(updated, HttpStatus.OK);
+	@PutMapping("/{id}/bonusMalus")
+	public ResponseEntity<Dipendente> updateBonusMalus(@PathVariable int id, @RequestBody Map<EMese, Double> bonusMalusMap) {
+	    Dipendente updated = dipendenteService.updateBonusMalus(id, bonusMalusMap);
+	    return new ResponseEntity<>(updated, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
@@ -57,13 +56,19 @@ public class DipendenteController {
 		return new ResponseEntity<>(dipendente, HttpStatus.OK);
 	}
 
-	@GetMapping("/highest-salary")
-	public ResponseEntity<Dipendente> getDipendenteWithHighestSalary() {
-		Dipendente dipendente = dipendenteService.getDipendenteWithHighestSalary();
+	@GetMapping("/stipendioPiuAlto")
+	public ResponseEntity<Dipendente> getDipendenteWithHighestStipendio() {
+		Dipendente dipendente = dipendenteService.getDipendenteWithHighestGrossStipendio();
 		return new ResponseEntity<>(dipendente, HttpStatus.OK);
 	}
 
-	@GetMapping("/highest-bonus-malus")
+	@GetMapping("/stipendioNetPiuAlto")
+	public ResponseEntity<Dipendente> getDipendenteWithHighestNetStipendio() {
+		Dipendente dipendente = dipendenteService.getDipendenteWithHighestNetStipendio();
+		return new ResponseEntity<>(dipendente, HttpStatus.OK);
+	}
+	
+	@GetMapping("/bonusMalusPiuAlto")
 	public ResponseEntity<Dipendente> getDipendenteWithHighestBonusMalus() {
 		Dipendente dipendente = dipendenteService.getDipendenteWithHighestBonusMalus();
 		return new ResponseEntity<>(dipendente, HttpStatus.OK);
