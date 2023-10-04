@@ -61,74 +61,68 @@ public class DipendenteService {
 
 		return highestSalaryDipendente;
 	}
-	
+
 	public Dipendente getDipendenteWithHighestNetStipendio() {
-	    List<Dipendente> dipendenti = getAllDipendenti();
-	    Dipendente highestSalaryDipendente = null;
-	    double highestNetSalary = Double.MIN_VALUE;
+		List<Dipendente> dipendenti = getAllDipendenti();
+		Dipendente highestSalaryDipendente = null;
+		double highestNetSalary = Double.MIN_VALUE;
 
-	    for (Dipendente dipendente : dipendenti) {
-	        double totalSalary = dipendente.getStipendio();
-	        Map<EMese, Double> monthlyBonusMalus = dipendente.getMonthlyBonusMalus();
+		for (Dipendente dipendente : dipendenti) {
+			double totalSalary = dipendente.getStipendio();
+			Map<EMese, Double> monthlyBonusMalus = dipendente.getMonthlyBonusMalus();
 
-	        for (Double bonusMalus : monthlyBonusMalus.values()) {
-	            totalSalary += bonusMalus;
+			for (Double bonusMalus : monthlyBonusMalus.values()) {
+				totalSalary += bonusMalus;
 
-	        }
-	        if (totalSalary > highestNetSalary) {
-	            highestNetSalary = totalSalary;
-	            highestSalaryDipendente = dipendente;
-	        }
-	    }
+			}
+			if (totalSalary > highestNetSalary) {
+				highestNetSalary = totalSalary;
+				highestSalaryDipendente = dipendente;
+			}
+		}
 
-	    return highestSalaryDipendente;
+		return highestSalaryDipendente;
 	}
 
 	public Dipendente updateBonusMalus(int id, Map<EMese, Double> bonusMalusMap) {
-        Dipendente dipendente = dipendenteRepository.findById(id)
-                .orElseThrow(() -> new DipendenteNotFoundException("ipendente con ID " + id + " non trovato"));
+		Dipendente dipendente = dipendenteRepository.findById(id)
+				.orElseThrow(() -> new DipendenteNotFoundException("ipendente con ID " + id + " non trovato"));
 
-        Map<EMese, Double> currentBonusMalus = dipendente.getMonthlyBonusMalus();
+		Map<EMese, Double> currentBonusMalus = dipendente.getMonthlyBonusMalus();
 
-        // Update the bonus/malus values based on the provided map
-        for (Map.Entry<EMese, Double> entry : bonusMalusMap.entrySet()) {
-            EMese month = entry.getKey();
-            Double bonusMalus = entry.getValue();
+		for (Map.Entry<EMese, Double> entry : bonusMalusMap.entrySet()) {
+			EMese month = entry.getKey();
+			Double bonusMalus = entry.getValue();
 
-            currentBonusMalus.put(month, bonusMalus);
-        }
+			currentBonusMalus.put(month, bonusMalus);
+		}
 
-        // Set the updated bonus/malus values
-        dipendente.setMonthlyBonusMalus(currentBonusMalus);
+		dipendente.setMonthlyBonusMalus(currentBonusMalus);
 
-        // Save the updated dipendente
-        return dipendenteRepository.save(dipendente);
-    }
-
-
-	public Dipendente getDipendenteWithHighestBonusMalus() {
-	    List<Dipendente> dipendenti = getAllDipendenti();
-	    Dipendente highestBonusMalusDipendente = null;
-	    double highestBonusMalus = Double.MIN_VALUE;
-
-	    for (Dipendente dipendente : dipendenti) {
-	        double totalBonusMalus = 0.0;
-	        Map<EMese, Double> monthlyBonusMalus = dipendente.getMonthlyBonusMalus();
-
-	        for (Double bonusMalus : monthlyBonusMalus.values()) {
-	            totalBonusMalus += bonusMalus;
-	        }
-
-	        if (totalBonusMalus > highestBonusMalus) {
-	            highestBonusMalus = totalBonusMalus;
-	            highestBonusMalusDipendente = dipendente;
-	        }
-	    }
-
-	    return highestBonusMalusDipendente;
+		return dipendenteRepository.save(dipendente);
 	}
 
+	public Dipendente getDipendenteWithHighestBonusMalus() {
+		List<Dipendente> dipendenti = getAllDipendenti();
+		Dipendente highestBonusMalusDipendente = null;
+		double highestBonusMalus = Double.MIN_VALUE;
 
+		for (Dipendente dipendente : dipendenti) {
+			double totalBonusMalus = 0.0;
+			Map<EMese, Double> monthlyBonusMalus = dipendente.getMonthlyBonusMalus();
+
+			for (Double bonusMalus : monthlyBonusMalus.values()) {
+				totalBonusMalus += bonusMalus;
+			}
+
+			if (totalBonusMalus > highestBonusMalus) {
+				highestBonusMalus = totalBonusMalus;
+				highestBonusMalusDipendente = dipendente;
+			}
+		}
+
+		return highestBonusMalusDipendente;
+	}
 
 	public Dipendente getDipendenteById(int id) {
 		return dipendenteRepository.findById(id)
